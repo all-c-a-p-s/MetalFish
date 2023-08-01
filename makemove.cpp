@@ -29,6 +29,11 @@ int legal_moves[218][2] = {{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-
 
 void get_w_pseudolegal(){
 
+    for(int i = 0;i<218;i++){
+        moves[i][0] = -1;
+        moves[i][1] = -1;
+    }  
+
     piece w_pawn;
     w_pawn.board_code = 0;
     w_pawn.fen_code = 'p';
@@ -118,6 +123,8 @@ void get_w_pseudolegal(){
     w_king2.moveset[1] = 13;
     w_king2.moveset[2] = -11;
     w_king2.moveset[3] = -13;
+
+    moves_count = 0;
 
     w_pawn.find_piece();
 
@@ -213,6 +220,11 @@ void get_w_pseudolegal(){
 }
 
 void get_b_pseudolegal(){
+
+    for(int i = 0;i<218;i++){
+        moves[i][0] = -1;
+        moves[i][1] = -1;
+    } 
         //BLACK PIECES:
 
     piece b_pawn;
@@ -305,7 +317,7 @@ void get_b_pseudolegal(){
     b_king2.moveset[3] = -13;
 
     
-
+    moves_count = 0;
   
     b_pawn.find_piece();
 
@@ -427,7 +439,7 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
 
     piece knight_check_1;
     knight_check_1.slider = false;
-    knight_check_1.board_code = 1;
+    knight_check_1.board_code = colour_to_test;//this way isenemy() calculations will always work
     knight_check_1.moveset[0] = 14;
     knight_check_1.moveset[1] = 25;
     knight_check_1.moveset[2] = 23;
@@ -435,7 +447,7 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
 
     piece knight_check_2;
     knight_check_2.slider = false;
-    knight_check_2.board_code = 1;
+    knight_check_2.board_code = colour_to_test;
     knight_check_2.moveset[0] = -14;
     knight_check_2.moveset[1] = -25;
     knight_check_2.moveset[2] = -23;
@@ -443,7 +455,7 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
 
     piece queen_check_1;//also rook
     queen_check_1.slider = true;
-    queen_check_1.board_code = 4;
+    queen_check_1.board_code = colour_to_test;
     queen_check_1.moveset[0] = 12;
     queen_check_1.moveset[1] = 1;
     queen_check_1.moveset[2] = -12;
@@ -451,14 +463,14 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
 
     piece queen_check_2;//also bishop
     queen_check_2.slider = true;
-    queen_check_2.board_code = 4;
+    queen_check_2.board_code = colour_to_test;
     queen_check_2.moveset[0] = 11;
     queen_check_2.moveset[1] = 13;
     queen_check_2.moveset[2] = -11;
     queen_check_2.moveset[3] = -13;
 
     piece king_check_1;
-    king_check_1.board_code = 5;
+    king_check_1.board_code = colour_to_test;
     king_check_1.slider = false;
     king_check_1.moveset[0] = 12;
     king_check_1.moveset[1] = 1;
@@ -466,7 +478,7 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
     king_check_1.moveset[3] = -1;
 
     piece king_check_2;
-    king_check_2.board_code = 5;
+    king_check_2.board_code = colour_to_test;
     king_check_2.slider = false;
     king_check_2.moveset[0] = 13;
     king_check_2.moveset[1] = 11;
@@ -486,7 +498,7 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
             check_count++;
             
         }
-    }//works
+    }
     else{
         if(board_12x12[king_square - 11] == 0 or board_12x12[king_square - 13] == 0){
             check_count++;
@@ -496,15 +508,12 @@ bool ischeck(int colour_to_test, int square_from, int square_to){
     }
 
     first_knight1_move = moves_count;
-    knight_check_1.movegen(king_square);
-    
-    
+    knight_check_1.movegen(king_square);  
     first_knight2_move = moves_count;//also last knight1 move
 
     for(int i = first_knight1_move;i < first_knight2_move;i++ ){
         if(get_type(board_12x12[get_12x12(moves[i][1])]) == 1 and isenemy(colour_to_test, board_12x12[get_12x12(moves[i][1])]) == true){
-            check_count++;
-            
+            check_count++;            
             
         }
     }
@@ -698,22 +707,44 @@ void get_all_moves(bool w_kside, bool w_qside, bool b_kside, bool b_qside){//inc
                      // as it already calls get_legal()
     int last_move_index;
     int last_added_move_index;
+    int promotion_vector;  
+
+    for(int i = 0;i<218;i++){
+        legal_moves[i][0] = -1;
+        legal_moves[i][1] = -1;
+    }  
+    
     last_move_index = get_legal();
     last_added_move_index = last_move_index;
+
     for(int i = 0;i < last_move_index;i++){//promotion logic
         if(legal_moves[i][0] == -1){
             break;
         }
         if(board_12x12[get_12x12(legal_moves[i][0])] == 0 and get_rank(legal_moves[i][1]) == 8){
-            //white pawn going to 8th rank
+            //white pawn to 8th rank
+            promotion_vector = legal_moves[i][1] - legal_moves[i][0];
+            legal_moves[i][1] = promotion_vector * 10 + 1;//important because promotions can also be captures
             
-            for(int j = 0;j < 5;j++){
-                legal_moves[last_added_move_index][0] = legal_moves[i][0];
-                legal_moves[last_added_move_index][1] = legal_moves[i][1];
-                last_added_move_index++;
+            for(int j = 2;j < 5;j++){
+                legal_moves[last_added_move_index][0] = legal_moves[i][0];//here j effectively becomes the piece we promtote to
+                legal_moves[last_added_move_index][1] = promotion_vector * 10 + j;//in make_move() we then subtract 64 from the destination square
+                last_added_move_index++;// to get the piece to promote to
             }
-            legal_moves[i][0] = 64;//null move
-            legal_moves[i][1] = 64;//which will not be made on the board using continue; in loop
+            
+            
+        }
+
+        else if(board_12x12[get_12x12(legal_moves[i][0])] == 24 and get_rank(legal_moves[i][1]) == 1){
+            //white pawn to 8th rank
+            legal_moves[i][1] = promotion_vector * 10 - 1;//here promotion vector will be negative
+            
+            for(int j = 26;j < 29;j++){
+                legal_moves[last_added_move_index][0] = legal_moves[i][0];//here j effectively becomes the piece we promtote to
+                legal_moves[last_added_move_index][1] = promotion_vector * 10 - j;//in make_move() we then subtract 64 from the destination square
+                last_added_move_index++;// to get the piece to promote to
+            }
+            
             
         }
     }
@@ -765,8 +796,186 @@ void get_all_moves(bool w_kside, bool w_qside, bool b_kside, bool b_qside){//inc
             }
 
         } 
-    } 
+    }    
     
+
+
+}
+
+void make_move(int square_from, int square_to){    
+
+    int promotion_square_to;
+
+    for(int i = 0;i < 64;i++){
+        if(board[i] == 30){
+            board[i] = -6;//remove old en passant squares
+            board_12x12[get_12x12(i)] = -6;
+        }
+    }
+
+    if(white_to_move(tempi) == 0){
+        
+        if(square_to > 90){
+            board[square_from] = -6;
+            board_12x12[get_12x12(square_from)] = -6;
+            promotion_square_to = square_from + 9;
+            board[promotion_square_to] = square_to - 90;//see get_all_moves() for explanation
+            board_12x12[get_12x12(promotion_square_to)] = square_to - 90;
+            tempi ++; 
+            return;
+
+        }
+        else if(square_to > 80){
+            board[square_from] = -6;
+            board_12x12[get_12x12(square_from)] = -6;
+            promotion_square_to = square_from + 8;
+            board[promotion_square_to] = square_to - 80;//see get_all_moves() for explanation
+            board_12x12[get_12x12(promotion_square_to)] = square_to - 80;
+            tempi ++; 
+            return;
+
+        }
+        else if(square_to > 70){
+            board[square_from] = -6;
+            board_12x12[get_12x12(square_from)] = -6;
+            promotion_square_to = square_from + 7;
+            board[promotion_square_to] = square_to - 70;//see get_all_moves() for explanation
+            board_12x12[get_12x12(promotion_square_to)] = square_to - 70; 
+            tempi ++;
+            return;
+
+        }
+    }
+    else{
+        if(square_to < -114){
+            board[square_from] = -6;
+            board_12x12[get_12x12(square_from)] = -6;
+            promotion_square_to = square_from - 9;
+            board[promotion_square_to] = (square_to - 90) * -1;//see get_all_moves() for explanation
+            board_12x12[get_12x12(promotion_square_to)] = (square_to - 90) * -1;
+            tempi ++;
+            return;
+
+        }
+        else if(square_to < -104){
+            board[square_from] = -6;
+            board_12x12[get_12x12(square_from)] = -6;
+            promotion_square_to = square_from - 8;
+            board[promotion_square_to] = (square_to - 80) * -1;//see get_all_moves() for explanation
+            board_12x12[get_12x12(promotion_square_to)] = (square_to - 80) * -1;
+            tempi ++;
+            return;
+
+        }
+        else if(square_to < -94){
+            board[square_from] = -6;
+            board_12x12[get_12x12(square_from)] = -6;
+            promotion_square_to = square_from - 7;
+            board[promotion_square_to] = (square_to - 70) * -1;//see get_all_moves() for explanation
+            board_12x12[get_12x12(promotion_square_to)] = (square_to - 70) * -1;
+            tempi ++;
+            return;
+
+        }
+    }
+
+    //updating castling rights etc.
+    if(board[square_from] == 5){//if white king is moved
+        white_kingside_castling = false;
+        white_queenside_castling = false;
+    }
+
+    if(square_from == 0 or square_to == 0){//if any piece moves from a1 or captures a1
+        white_queenside_castling = false;//in case another piece was on a1, this will just 
+                                         //be set from false to false
+    }
+    if(square_from == 7 or square_to == 7){//as above
+        white_kingside_castling = false;
+    }
+
+    if(board[square_from] == 29){//if black king is moved
+        black_kingside_castling = false;
+        black_queenside_castling = false;
+    }
+
+    if(square_from == 56 or square_to == 56){//if any piece moves from a8 or captures a8
+        black_queenside_castling = false;//in case another piece was on a8, this will just 
+                                         //be set from false to false
+    }
+    if(square_from == 63 or square_to == 63){//as above
+        black_kingside_castling = false;
+    }
+
+    if(board[square_from] != 0 and board[square_from] != 24 and board[square_to] == -6){//no pawn move or capture        
+        fifty_moves ++;
+        
+    }
+    else{//reset fifty move rule
+        fifty_moves = 0;
+    }
+
+    if(board[square_from] == 0 and (square_to == square_from + 16)){
+        board[square_from + 8] = 30;
+        board_12x12[get_12x12(square_from) + 12] = 30;// add en passant square
+    }
+
+    else if(board[square_from] == 24 and (square_to == square_from - 16)){
+        board[square_from - 8] = 30;
+        board_12x12[get_12x12(square_from) - 12] = 30;//add en passant square
+    }
+
+
+    if(square_from == 4 and board[square_from] == 5 and square_to == 6){//if white castles kingside
+        board[4] = -6;
+        board[7] = -6;
+        board[6] = 5;
+        board[5] = 3;//update board accordingly
+        board_12x12[get_12x12(4)] = -6;
+        board_12x12[get_12x12(7)] = -6;
+        board_12x12[get_12x12(6)] = 5;
+        board_12x12[get_12x12(5)] = 3; 
+        tempi ++;
+    }
+    else if(square_from == 4 and board[square_from] == 5 and square_to == 2){//if white castles queenside
+        board[4] = -6;
+        board[0] = -6;
+        board[2] = 5;
+        board[3] = 3;//update board accordingly
+        board_12x12[get_12x12(4)] = -6;
+        board_12x12[get_12x12(0)] = -6;
+        board_12x12[get_12x12(2)] = 5;
+        board_12x12[get_12x12(3)] = 3;
+        tempi ++;
+    }
+    else if(square_from == 60 and board[square_from] == 29 and square_to == 62){//if black castles kingside
+        board[60] = -6;
+        board[63] = -6;
+        board[62] = 29;
+        board[61] = 27;//update board accordingly
+        board_12x12[get_12x12(60)] = -6;
+        board_12x12[get_12x12(63)] = -6;
+        board_12x12[get_12x12(62)] = 29;
+        board_12x12[get_12x12(61)] = 27;
+        tempi ++;
+    }
+    else if(square_from == 60 and board[square_from] == 29 and square_to == 62){//if black castles kingside
+        board[60] = -6;
+        board[56] = -6;
+        board[58] = 29;
+        board[59] = 27;//update board accordingly
+        board_12x12[get_12x12(60)] = -6;
+        board_12x12[get_12x12(56)] = -6;
+        board_12x12[get_12x12(58)] = 29;
+        board_12x12[get_12x12(59)] = 27;
+        tempi ++;
+    }
+    else{
+        board[square_to] = board[square_from];
+        board_12x12[get_12x12(square_to)] = board_12x12[get_12x12(square_from)];
+        board[square_from] = -6;
+        board_12x12[get_12x12(square_from)] = -6;
+        tempi ++;
+    }
 
 
 }

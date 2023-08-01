@@ -67,12 +67,13 @@ bool isenemy(int x, int y){
         y = 1;//as above
     }
 
+
     if(x == 5 and y == 5){
         x = 4;//otherwise two white kings will be 'enemies'
     }
 
     bool is_enemy = false;
-    if(23 < (x * y) and (x * y) < 151){//en passant also counts as enemy
+    if(23 < (x * y) and (x * y) < 146){//en passant also counts as enemy
 
         is_enemy = true;
         
@@ -113,5 +114,10 @@ int get_colour(int x){
     return foo;
 }
 
+//initialising some values for variables we need to keep track of
+bool white_kingside_castling = true;
+bool white_queenside_castling = true;
+bool black_kingside_castling = true;
+bool black_queenside_castling = true;
 int fifty_moves = 0;
 int tempi = 0;

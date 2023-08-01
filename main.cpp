@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <cstdlib>
+#include <unistd.h>
 #include "makemove.cpp"
 
 using namespace std;
@@ -57,27 +59,44 @@ int convert_to_num(string notation){
 
 }
 
-int main(){ 
+int main(){
 
-       
 
-    //get_legal();
-    get_all_moves(true, true, true, true);
 
-    for(int i = 0;i < 218;i++){
-        if(legal_moves[i][0] == -1){
-            break;
-        }
-        cout << legal_moves[i][0] << endl;
-        cout << legal_moves[i][1] << endl;
-        cout << "\n";
-    }
- 
-
-    //cout << convert_to_notation(move_from) << "-";
-    //cout << convert_to_notation(move_to) << endl;
+    srand((unsigned) time(NULL));
 
     
+    int move_chosen;
+    int last_used_move;
+    
+    for(int i = 0;i < 500;i++){
+        get_all_moves(white_kingside_castling, white_queenside_castling, black_kingside_castling, black_queenside_castling);
+        if(legal_moves[0][0] == -1){//check for checkmate or stalemate to end the game
+            break;
+        }
+        last_used_move = 0;
+
+        for(int i = 0;i < 218;i++){
+            
+            if(legal_moves[i][0] == -1){
+                last_used_move = i - 1;
+                break;
+            }
+        }
+   
+        move_chosen =  0 + (rand() % last_used_move);
+        cout << convert_to_notation(legal_moves[move_chosen][0]) << endl;
+        cout << convert_to_notation(legal_moves[move_chosen][1]) << endl;
+        cout << tempi << endl;
+        
+    
+        
+
+        make_move(legal_moves[move_chosen][0], legal_moves[move_chosen][1]);
+        sleep(5);
+
+        
+    }   
     
     return 0;
 }

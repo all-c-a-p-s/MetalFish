@@ -85,9 +85,7 @@ class piece{
                         //as long as the next square is either empty or an enemy piece
 
                         moves[moves_count][0] = get_8x8(temp);//temp because square keeps getting updated
-                        //cout << get_8x8(temp) << endl;
                         moves[moves_count][1] = get_8x8(square + moveset[i]);
-                        //cout << get_8x8(square + moveset[i]) << endl;
                         moves_count ++;
                         //add origin and destination of move to moves array
 
@@ -109,9 +107,7 @@ class piece{
                 for(int i = 0; i <= 3; i++){
                     if(board_12x12[square + moveset[i]] == -6 or isenemy(board_code,board_12x12[square + moveset[i]]) == true){
                         moves[moves_count][0] = get_8x8(square);
-                        //cout << get_8x8(square) << endl;
                         moves[moves_count][1] = get_8x8(square + moveset[i]);
-                        //cout << get_8x8(square + moveset[i]) << endl;
                         moves_count ++;
                     }
                 }
@@ -124,9 +120,7 @@ class piece{
                     if(board_12x12[square + moveset[0]] == -6 and board_12x12[square + moveset[1]] == -6){
 
                         moves[moves_count][0] = get_8x8(square);
-                        //cout << get_8x8(square) << endl;
                         moves[moves_count][1] = get_8x8(square + moveset[1]);
-                        //cout << get_8x8(square + moveset[1]) << endl;
                         moves_count ++;//by 2
                                 
                     }
@@ -140,13 +134,13 @@ class piece{
 
                 
 
-                if(isenemy(board_code,board_12x12[square + moveset[2]]) == true){
+                if(isenemy(board_code,board_12x12[square + moveset[2]]) == true or board_12x12[square + moveset[2]] == 30){
                     moves[moves_count][0] = get_8x8(square);
                     moves[moves_count][1] = get_8x8(square + moveset[2]);
                     moves_count ++;//capture left
                 }
 
-                if(isenemy(board_code,board_12x12[square + moveset[3]]) == true){
+                if(isenemy(board_code,board_12x12[square + moveset[3]]) == true or board_12x12[square + moveset[3]] == 30){
                     moves[moves_count][0] = get_8x8(square);
                     moves[moves_count][1] = get_8x8(square + moveset[3]);
                     moves_count ++;//capture right
