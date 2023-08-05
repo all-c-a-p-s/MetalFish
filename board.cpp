@@ -1,5 +1,10 @@
 #include <iostream>
-#include <string>
+#include <array>
+
+/**
+ * This file contains the arrays for the two boards in their string positions, as well as some useful functions
+ * to get the colour, type of a piece etc.
+*/
 
 using namespace std;
 
@@ -32,7 +37,6 @@ int get_rank(int x){
     return rank;
 }
 
-
 int get_12x12(int x){
 
     return 22 + 4 * (get_rank(x)) + 8 * (get_rank(x)) - (8 - x % 8);//add one extra row, then remove unnecessary squares
@@ -54,8 +58,10 @@ return (8 * ((get_12x12_rank(x) - 2) - 1)) + ((x % 12) - 2);
 }
 
 int white_to_move(int x){   
-
-    return x % 2;
+    if((x % 2) == 0){
+        return true;
+    }
+    return false;
 }
 
 bool isenemy(int x, int y){
@@ -114,6 +120,7 @@ int get_colour(int x){
     return foo;
 }
 
+
 //initialising some values for variables we need to keep track of
 bool white_kingside_castling = true;
 bool white_queenside_castling = true;
@@ -121,3 +128,4 @@ bool black_kingside_castling = true;
 bool black_queenside_castling = true;
 int fifty_moves = 0;
 int tempi = 0;
+int en_passant_square = -1;
