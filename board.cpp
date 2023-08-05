@@ -31,19 +31,19 @@ int board_12x12[144] = {      -12,-12,-12,-12,-12,-12,-12,-12,-12,-12,-12,-12,//
                               -12,-12,-12,-12,-12,-12,-12,-12,-12,-12,-12,-12,
                               -12,-12,-12,-12,-12,-12,-12,-12,-12,-12,-12,-12};
 
-int get_rank(int x){
+int get_rank(int x){//returns rank of a square (1-8)
     int rank;
     rank = (x + 8)/8;
     return rank;
 }
 
-int get_12x12(int x){
+int get_12x12(int x){//converts from regular board to 12x12 board number
 
     return 22 + 4 * (get_rank(x)) + 8 * (get_rank(x)) - (8 - x % 8);//add one extra row, then remove unnecessary squares
 
 }
 
-int get_12x12_rank(int x){
+int get_12x12_rank(int x){//gets rank on 12x12 board
 
     int rank;
     rank = (x + 12)/12;
@@ -51,20 +51,20 @@ int get_12x12_rank(int x){
 
 }
 
-int get_8x8(int x){
+int get_8x8(int x){//converts from 12x12 index to 8x8 index
 
 return (8 * ((get_12x12_rank(x) - 2) - 1)) + ((x % 12) - 2);
 
 }
 
-int white_to_move(int x){   
+int white_to_move(int x){//gets side to move   
     if((x % 2) == 0){
         return true;
     }
     return false;
 }
 
-bool isenemy(int x, int y){
+bool isenemy(int x, int y){//finds whether two pieces are enemies using the product of their board codes
     if(x == 0){
         x = 1;//otherwise (white pawn * empty) gives same result as (white pawn * enemy)
     }
@@ -88,7 +88,7 @@ bool isenemy(int x, int y){
     return is_enemy;
 }
 
-bool iswhite(int x){
+bool iswhite(int x){//gets if a piece is white
 
     bool is_white = false;
     int foo;
@@ -99,7 +99,7 @@ bool iswhite(int x){
     return is_white;
 }
 
-bool isblack(int x){
+bool isblack(int x){//gets if a piece is black
 
     bool is_black = false;
     int foo;
@@ -110,11 +110,11 @@ bool isblack(int x){
     return is_black;
 }
 
-int get_type(int x){
+int get_type(int x){//gets type of a piece (in board_code form)
     return x % 6;
 }
 
-int get_colour(int x){
+int get_colour(int x){//gets colour of a piece
     int foo;
     foo = x / 6; 
     return foo;

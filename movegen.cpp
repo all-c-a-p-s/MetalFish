@@ -11,7 +11,7 @@
 using namespace std;
 
 
-class pseudolegal_move{//here we don't need to store anything like castling rights
+class pseudolegal_move{//here we don't need to store anything like castling rights or even square reset
     public:
         int square_from;
         int square_to;
@@ -19,10 +19,10 @@ class pseudolegal_move{//here we don't need to store anything like castling righ
 };
 
 array<pseudolegal_move, 218> moves;//218 is maximum possible number of legal moves in a position
-//theoretically this could be higher for pseudolegal moves, bu in practice this won't occur
+//theoretically this could be higher for pseudolegal moves, but in practice this won't occur
 
-int squares_found[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};//initialise as empty
-int moves_count;
+int squares_found[10];
+int moves_count;//used to add new pseudolegal moves to the right index
 
 class piece{
 
@@ -50,7 +50,7 @@ class piece{
             while(found_count < 10){//there can never be more than 10 of a certain piece on the board at a time
                 for(int i = 0; i <64; i++){
                     if(board[i] == board_code){
-                        squares_found[found_count] = get_12x12(i);//where i is the square
+                        squares_found[found_count] = get_12x12(i);//where i is the square. this is 12x12'd because it passes directly into movegen()
                         found_count ++;
                     }
                 }
@@ -80,7 +80,7 @@ class piece{
 
                         moves[moves_count] = move;
                         moves_count ++;
-                        //add origin and destination of move to list
+                        //add origin and destination of move to array
 
                         if(isenemy(board_code,board_12x12[square + moveset[i]]) == true){
                             break;
@@ -104,7 +104,7 @@ class piece{
                         move.square_to =get_8x8(square + moveset[i]);
 
                         moves[moves_count] = move;
-                        moves_count ++;
+                        moves_count ++;//add move to array
                     }
                 }
                 if(board_code == 5 and moveset[0] == 12){//otherwise this will get added for both king1 and king2
@@ -174,7 +174,7 @@ class piece{
                 if(board_12x12[square + moveset[0]] == -6){//if pawn is not blocked
                     pseudolegal_move move;
                     move.square_from = get_8x8(square);
-                    move.square_to =get_8x8(square + moveset[0]);
+                    move.square_to =get_8x8(square + moveset[0]);//by 1
 
                     moves[moves_count] = move;
                     moves_count ++;
@@ -185,7 +185,7 @@ class piece{
                 if(isenemy(board_code,board_12x12[square + moveset[2]]) == true or board_12x12[square + moveset[2]] == 30){
                     pseudolegal_move move;
                     move.square_from = get_8x8(square);
-                    move.square_to =get_8x8(square + moveset[2]);
+                    move.square_to =get_8x8(square + moveset[2]);//capture left
 
                     moves[moves_count] = move;
                     moves_count ++;
@@ -194,7 +194,7 @@ class piece{
                 if(isenemy(board_code,board_12x12[square + moveset[3]]) == true or board_12x12[square + moveset[3]] == 30){
                     pseudolegal_move move;
                     move.square_from = get_8x8(square);
-                    move.square_to =get_8x8(square + moveset[3]);
+                    move.square_to =get_8x8(square + moveset[3]);//capture right
 
                     moves[moves_count] = move;
                     moves_count ++;
@@ -211,7 +211,7 @@ class piece{
 
         } 
         
-        void get_moves(int board[], int board_12x12[]){
+        void get_moves(int board[], int board_12x12[]){//function which calls find_piece() and movegen()
             find_piece(board);
 
             for(int i = 0;i < 10;i++){

@@ -7,6 +7,8 @@
  * which is reached without having to look any further into the position).
 */
 
+int negative_infinity = -1000000;
+int positive_infinity = 1000000;
 
 using namespace std;
 
@@ -27,9 +29,9 @@ const int wp_table[64] ={0,  0,  0,  0,  0,   0,  0,  0,
                          60, 60, 60, 70, 70, 60, 60, 60,
                           0,  0,  0,  0,  0,  0,  0,  0};
 
-const int wn_table[64] = {  -25, -40, -15, -15, -15, -15, -20, -25,
+const int wn_table[64] = {  -25, -20, -15, -15, -15, -15, -20, -25,
                             -15, -20,   0  , 0,   0,   0, -20, -15,
-                            -10,   0,  10,  15,  15,  10,   0, -10,
+                            -10,   0,  10,   5,   5,  10,   0, -10,
                             -10,   5,  15,  20,  20,  15,   5, -10,
                              -5,   0,  15,  20,  20,  15,   0,  -5,
                             -15,   5,  20,  25,  25,  20,   5, -15,
@@ -87,9 +89,9 @@ const int bn_table[64] = {-50, -40, -30, -30, -30, -30, -40, -50,
                           -15,   5,  20,  25,  25,  20,   5, -15,
                           -5,   0,  15,  20,  20,  15,   0,  -5,
                           -10,   5,  15,  20,  20,  15,   5, -10,
-                          -10,   0,  10,  15,  15,  10,   0, -10,
+                          -10,   0,  10,   5,   5,  10,   0, -10,
                           -15, -20,   0  , 0,   0,   0, -20, -15,
-                          -25, -40, -15, -15, -15, -15, -20, -25};
+                          -25, -20, -15, -15, -15, -15, -20, -25};
 
 const int bb_table[64] = {-30, -30, -30, -30, -30, -30, -30, -30,
                           -20, -10,  -5,  -5,  -5,  -5, -10, -20,
@@ -131,16 +133,16 @@ const int bk_table[64] = {-30, -40, -40, -50, -50, -40, -40, -30,
 int ischeckmate(){//should be called only if there are no legal moves. returns the eval if that is the case
     
     if(white_to_move(tempi) == true){
-        if(legal_moves[0].square_from == -1){
+        if(legal_moves[0].square_from == -1){//i.e. no legal moves have been added to the array
             if(ischeck(5,board,board_12x12) == true){
-                return -1000000;//checkmate for black
+                return negative_infinity;//checkmate for black
             }
         }
     }
     else{
         if(legal_moves[0].square_from == -1){
             if(ischeck(29,board,board_12x12) == true){
-                return 1000000;//checkmate for white
+                return positive_infinity;//checkmate for white
             }
     }
     }
@@ -151,7 +153,7 @@ int ischeckmate(){//should be called only if there are no legal moves. returns t
 //i.e. evaluate the position without having to look any further
 int evaluate(int board[]){
 
-    int eval = 0;//initialise as 0
+    int eval = 0;//initialise as 0 so previous evals don't affect this position's eval
     
 
     if(legal_moves[0].square_from == -1){//if there are no legal moves

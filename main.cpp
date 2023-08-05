@@ -63,22 +63,25 @@ int convert_to_num(string notation){//function to convert from algebraic notatio
 
 }
 
-bool engine_plays_white;
+bool engine_plays_white;//which side engine plays as
 
 void get_user_move(){//function to get and parse the user's input
     if(engine_plays_white == true){//engine is white
         Move move;
         string sq_to;
         string sq_from;
-        cin >> sq_from >> sq_to;
+        cout << "square from: " << endl;
+        cin >> sq_from ;
+        cout << "square to: " << endl;
+        cin >> sq_to;
         move.square_from = convert_to_num(sq_from);
-        move.square_to = convert_to_num(sq_to);
+        move.square_to = convert_to_num(sq_to);//convert's to engine numeric board notation
         move.square_reset = board[move.square_to];
         if(board[move.square_from] == 24 and (get_rank(move.square_to) == 1)){//black promotes pawn
             cout << "promote to: (capital letter used to notate piece)" << endl;
             char promote_char;
             cin >> promote_char;
-            switch(promote_char){
+            switch(promote_char){//allows user to choose which piece to promote to
                 case 'Q':
                     move.promote_to = 28;
                     break;
@@ -109,7 +112,10 @@ void get_user_move(){//function to get and parse the user's input
         Move move;
         string sq_to;
         string sq_from;
-        cin >> sq_from >> sq_to;
+        cout << "square from: " << endl;
+        cin >> sq_from ;
+        cout << "square to: " << endl;
+        cin >> sq_to;
         move.square_from = convert_to_num(sq_from);
         move.square_to = convert_to_num(sq_to);
         move.square_reset = board[move.square_to];
@@ -117,7 +123,7 @@ void get_user_move(){//function to get and parse the user's input
             cout << "promote to (capital letter used to notate piece): " << endl;
             char promote_char;
             cin >> promote_char;
-            switch(promote_char){
+            switch(promote_char){//allows user to choose which piece to promote to
                 case 'Q':
                     move.promote_to = 4;
                     break;
@@ -147,11 +153,11 @@ void get_user_move(){//function to get and parse the user's input
 
 }
 
-void output_engine_move(Move move){
+void output_engine_move(Move move){//function to output engine's chosen move in algebraic notation
     cout << convert_to_notation(move.square_from);
     cout << convert_to_notation(move.square_to);
     string promote_to_letter;
-    switch(get_type(move.promote_to)){
+    switch(get_type(move.promote_to)){//converts the type of piece engine wants to promote to to its notation
         case 4:
             promote_to_letter = "Q";
             break;
@@ -172,12 +178,13 @@ void output_engine_move(Move move){
         cout << promote_to_letter;
     }
     cout << "\n";
+    cout << "\n";
 }
 
 
 int main(){
-    
-    cout << "While playing against the engine, please enter your move in the format (square from)[return](square to)." << endl;
+ 
+    //first set up which colour is played by user/engine
     string user_colour;
     cout << "Which colour would you like to play?" << endl;
     cin >> user_colour;
@@ -195,6 +202,8 @@ int main(){
 
     if(engine_plays_white == true){
         for(int i = 0; i < 500;i++){
+            cout << "\n";
+            cout << "\n";
             cout << "thinking..." << endl;
             get_legal(board, board_12x12);
             array <Move, 218> depth1_moves;//making a copy of legal_moves array so that the actual array 
@@ -217,7 +226,8 @@ int main(){
         for(int i = 0; i < 500;i++){//here we need to flip the order of get_user_move() and output_engine_move()
         cout << "enter your move: " << endl;
         get_user_move();//gets and parses user's move
-
+        cout << "\n";
+        cout << "\n";
         cout << "thinking..." << endl;
 
         get_legal(board, board_12x12);
