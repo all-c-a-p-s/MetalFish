@@ -1,14 +1,21 @@
-# chess_engine
-made by: Sebastiano Rebonato-Scott
+# Svicolone - Chess Engine
+Made by: Sebastiano Rebonato-Scott
 
-current elo: ~1100
+Current elo: ~1200
 
-this is a high-school project i'm currently working on. it's made for fun and not with the aim of being a particularly strong engine. It currently searches to a fixed depth of 6 for every move, and uses piece-square tables for evaluation.
+Svicolone is an Italian cartoon character. The similarity between the cartoon character and the chess engine if that both tend to get themselves into tricky situations. The difference if that the cartoon character always ends up getting out of these predicaments, while the same cannot be said for the engine.
 
-todo:
-- quiescence function (doesn't exit search in positions where e.g. pieces are hanging)
+Latest Update (bug fixes + optimisations):
+- fixed bugs with mate detection
+- fixed bug with pawn promotions
+- sped up check detection
+- sped up move generation
+
+Todo:
+- quiescence search
 - move ordering
-    
-- opening book/endgame evaluation
-- uci protocol 
+- more detailed evaluation
+- opening book
+- uci protocol
+
 
