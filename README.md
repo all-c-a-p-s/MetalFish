@@ -1,18 +1,20 @@
-# Svicolone - Chess Engine
+# Panda - Chess Engine
 Made by: Sebastiano Rebonato-Scott
 
-Current elo: ~1200
+Current elo: ~1400
 
-Svicolone is an Italian cartoon character. The similarity between the cartoon character and the chess engine if that both tend to get themselves into tricky situations. The difference if that the cartoon character always ends up getting out of these predicaments, while the same cannot be said for the engine.
+Reasons for the name:
+- pandas are black and white (like a chessboard)
+- pandas are friendly and not very dangerous (you can't exactly have an engine rated 1400 and call it something like Black Panther)
+- pandas are pretty slow, kinda like my array-based move generation
 
-Latest Update (bug fixes + optimisations):
-- fixed bugs with mate detection
-- fixed bug with pawn promotions
-- sped up check detection
-- sped up move generation
+Latest Update (recapture search, negamax, bug fix):
+- replaced minimax with negamax for easier use in other functions
+- updated evaluation to being from side-to-move's perspective to work in negamax
+- implemented recapture search to prevent horizon effect (mostly)
+- fixed bug with castling
 
 Todo:
-- quiescence search
 - move ordering
 - more detailed evaluation
 - opening book
