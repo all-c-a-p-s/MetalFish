@@ -282,7 +282,7 @@ int negamax(int depth, int board[], int board_10x12[], int alpha, int beta){
     get_legal(board, board_10x12);//get ordered moves
 
     if(legal_moves[0].square_from == -1){ 
-        return - ischeckmate(board, board_10x12);//if game ends. negated to "cancel out" negamax call being negated
+        return ischeckmate(board, board_10x12);//if game ends.
     }    
     //this is risky as we can't detect if leaf nodes are checkmate. however, this way we can detect 
     //checkmate in other nodes at 0 cost since we needed to generate moves anyway. this should greatly improve search speed.
