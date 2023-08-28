@@ -8,11 +8,10 @@ Reasons for the name:
 - pandas are friendly and not very dangerous (you can't exactly have an engine rated 1400 and call it something like Black Panther)
 - pandas are pretty slow, kinda like my array-based move generation
 
-Latest Update (recapture search, negamax, bug fix):
-- replaced minimax with negamax for easier use in other functions
-- updated evaluation to being from side-to-move's perspective to work in negamax
-- implemented recapture search to prevent horizon effect (mostly)
-- fixed bug with castling
+Latest Update (search optimisations):
+- do not detect mate on leaf nodes
+- speed up recapture detection
+- overall 80-90% increase in search speed
 
 Todo:
 - move ordering
