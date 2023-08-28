@@ -12,9 +12,6 @@ using namespace chrono;
  * from other files and handles input/output. * 
 */
 
-//no move ordering 1. e4 d5(2s) 2. exd5 Qxd5 (11s)
-//with move ordering 1. e4 d5(4s) 2. exd5 Qxd5 (12s) 3. Nc3 Qe5+ (36s) - probably faster in more complex positions
-
 void get_user_move(){//function to get and parse the user's input
     if(engine_plays_white == true){//engine is white
         Move move;
