@@ -2,12 +2,13 @@
 #include <array>
 #include "movegen.cpp"
 
+using namespace std;
+
 /**
  * This file finds legal moves in a position, and also contains functions to make or undo a move on the board.
  * It also converts from psuedolegal moves to legal moves, which involves covering edge-cases such as promotions 
  * and updating global variables such as the fifty move counter and castling rights.
  */
-using namespace std;
 
 enum move_type{normal, promotion};//promotions are different because we need to keep track of which piece to promote to
 
