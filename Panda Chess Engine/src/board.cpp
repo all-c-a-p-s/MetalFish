@@ -1,13 +1,15 @@
 #include <iostream>
 #include <array>
 
+using namespace std;
+
 /**
  * This file contains the arrays used to represent the board in their starting positions, as well as some useful functions
  * to get the colour, type of a piece etc. A 10x12 array is used to show the edges of the board as that knights don't jump 
  * around the sides of the board. I later realised that a 12x10 array would have worked too.
 */
 
-using namespace std;
+
 
 bool engine_plays_white = true;
 const int negative_infinity = -1000000;
