@@ -10,4 +10,4 @@ Reasons for name:
 
 Accomplishments:
 - beating my dad
-- turning my laptop into a fucking toaster and draining its battery
+- turning my laptop into a literal toaster and draining its battery
