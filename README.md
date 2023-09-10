@@ -2,6 +2,7 @@
 <img width="382" alt="MetalFish" src="https://github.com/all-caps-when-you-spell-the-user-name/MetalFish/assets/141144328/18a3cbf7-3400-4e29-a606-70cb3ee804c5">
 
 Made by: Sebastiano Rebonato-Scott
+
 Current elo: ~1400
 
 Reasons for name: 
