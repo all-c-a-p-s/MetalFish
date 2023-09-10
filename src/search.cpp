@@ -98,15 +98,13 @@ int negamax(int depth, int board[], int board_12x12[], int alpha, int beta){
         return 0;
     }
 
-    get_legal(board, board_12x12);//first get ordered moves
+    get_legal(board, board_12x12);//first get legal moves
     if(legal_moves[0].square_from == -1){
         return ischeckmate(board, board_12x12);//if game ends
     }
 
     if(depth == 0){
-        array <Move, 100> legal_moves_reset = legal_moves;
         return recapture_search(board, board_12x12, alpha, beta, 0);//has already been negated in recursive function call        
-        legal_moves = legal_moves_reset;
     }
 
     int max_eval = negative_infinity;
